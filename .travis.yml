@@ -1,0 +1,20 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t clefresh/react-test -f Dockerfile.dev ./client/Dockerfile.dev
+
+script:
+  - docker run clefresh/react-test npm run test -- --watchAll=false
+
+after_sucess:
+  - docker build -t clefresh/multi-client ./client
+  - docker build -t clefresh/multi-nginx ./nginx
+  - docker build -t clefresh/multi-server ./server
+  - docker build -t clefresh/multi-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID"  --password-stdin
+  - docker push clefresh/multi-client
+  - docker push clefresh/multi-nginx
+  - docker push clefresh/multi-server
+  - docker push clefresh/multi-worker
