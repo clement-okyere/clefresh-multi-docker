@@ -13,7 +13,7 @@ after_sucess:
   - docker build -t clefresh/multi-nginx ./nginx
   - docker build -t clefresh/multi-server ./server
   - docker build -t clefresh/multi-worker ./worker
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID"  --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "TEST"  --password-stdin
   - docker push clefresh/multi-client
   - docker push clefresh/multi-nginx
   - docker push clefresh/multi-server
