@@ -4,6 +4,8 @@ services:
 
 before_install:
   - docker build -t clefresh/react-test -f ./client/Dockerfile.dev ./client
+  - echo "$DOCKER_PASSWORD"
+  - echo "$DOCKER_ID"
 
 script:
   - docker run clefresh/react-test npm run test -- --watchAll=false
@@ -13,7 +15,7 @@ after_sucess:
   - docker build -t clefresh/multi-nginx ./nginx
   - docker build -t clefresh/multi-server ./server
   - docker build -t clefresh/multi-worker ./worker
-  - echo "$DOCKER_PASSWORD" | docker login -u "TEST"  --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push clefresh/multi-client
   - docker push clefresh/multi-nginx
   - docker push clefresh/multi-server
